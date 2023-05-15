@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FAN</title>
+</head>
+<body>
+      <h2>!FANLAR!</h2>
+      <br>
+      <br>
+      <hr>
+      <form method="get">
+        <input type="text" name="search" placeholder="fan nomi boyicha ohtaring">
+        <button>ohtar</button>
+      </form>
+      <hr>
+      <ul>
+        {% for fan in fanlar %}
+        <li>
+            {{fan}}
+        </li>
+          <a href="fan_ochir/{{fan.id}}/"><button>ochirish</button></a>
+          {%endfor%}
+      </ul>
+      <form method="post">{% csrf_token %}
+          <input type="text" name="nom" placeholder="nom">
+          <input type="text" name="yonalish" placeholder="yonalish">
+          <input type="text" name="asosiy" placeholder="asosiy fan, True,False">
+          <select name="y">
+              {% for i in yonalishlar %}
+              <option value="{{i.id}}">
+                    {{i.nom}}
+              </option>
+              {% endfor %}
+          </select>
+          <button type="submit">qoshish</button>
+      </form>
+</body>
+</html>

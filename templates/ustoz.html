@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ustoz!</title>
+</head>
+<body>
+      <h2>!ustozlar!</h2>
+      <br>
+      <br>
+      <hr>
+      <form method="get">
+        <input type="text" name="search" placeholder="ustoz ismi boyicha ohtaring">
+        <button>ohtar</button>
+      </form>
+      <hr>
+      <ul>
+        {% for ustoz in ustozlar %}
+        <li>
+            {{ustoz.id}}.{{ustoz}}
+        </li>
+          <a href="ustoz_ochir/{{ustoz.id}}/"><button>ochirish</button></a>
+          {%endfor%}
+
+
+      <form method="post">{% csrf_token %}
+          <input type="text" name="ism" placeholder="ism">
+          <input type="text" name="daraja" placeholder="daraja: Bakalavr, Magistr">
+          <input type="number" name="yosh" placeholder="yosh">
+          <select name="jins">
+              <option value="Erkak">Erkak</option>
+              <option value="Ayol">Ayol</option>
+          </select>
+          <select name="f">
+              {% for fan in fanlar %}
+              <option value="{{fan.id}}">
+                    {{fan.nom}}
+              </option>
+              {% endfor %}
+          </select>
+          <button type="submit">qoshish</button>
+      </form>
+      </ul>
+</body>
+</html>
