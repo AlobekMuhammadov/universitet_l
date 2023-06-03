@@ -4,7 +4,7 @@ from asosiy.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('yonalishlar/', ),
-    path('fanlar/',fan),
+    path('fanlar/',fanlar),
     path('yonalishlar/',yonalish),
     path('yonalish_ochir/<int:son>/',yonalish_ochir),
     path('ustozlar/',ustoz),

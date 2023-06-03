@@ -1,29 +1,30 @@
 from django.shortcuts import render, redirect
+
+from .forms import FanForm
 from .models import *
 from django.http import HttpResponse
 
-def fan(request):
+def fanlar(request):
     if request.method == 'POST':
-        Fan.objects.create(
-            asosiy = request.POST.get('asosiy'),
-            nom = request.POST.get('nom'),
-            yonalish = Yonalish.objects.get(id=request.POST.get('y'))
-        )
-        return redirect('/fanlar/')
-
-
-    soz = request.GET.get('search')
-    if soz == '' or soz is None:
-        content= {
-            'fanlar':Fan.objects.all(),
-            'yonalishlar': Yonalish.objects.all()
+        forma = FanForm(request.POST)
+        if forma.is_valid():
+            forma.save()
+        return redirect('/asosiy/')
+    fan = request.GET.get('qidiruv')
+    if fan == "" or fan is None:
+        content = {
+            "fanlar": Fan.objects.all(),
+            "yonalishlar" : Yonalish.objects.all(),
+            "forma": FanForm()
         }
     else:
         content = {
-            'fanlar':Fan.objects.filter(nom__contains=soz),
-            'yonalishlar':Yonalish.objects.all()
+            "fanlar": Fan.objects.filter(nom__icontains=fan),
+            "yonalishlar": Yonalish.objects.all(),
+            "forma": FanForm()
         }
-    return render(request,'fan.html/', content)
+
+    return render(request,'fan.html',content)
 
 def fan_ochir(request, son):
     Fan.objects.filter(id=son).delete()
@@ -65,23 +66,19 @@ def ustoz_ochir(request, son):
 
 def yonalish(request):
     if request.method == 'POST':
-        Yonalish.objects.create(
-            aktiv = request.POST.get('aktiv'),
-            nom = request.POST.get('nom')
+        f =YonalishForm(request.POST)
+        if f.is_valid():
+            Yonalish.objects.create(
+                nom=f.cleaned_data['nom'],
+                aktiv=f.cleaned_data['aktiv']
+
         )
         return redirect('/yonalishlar/')
-
-
-    soz = request.GET.get('search')
-    if soz == '' or soz is None:
-        content= {
-            'yonalishlar': Yonalish.objects.all()
-        }
-    else:
-        content = {
-            'yonalishlar':Yonalish.objects.all()
-        }
-    return render(request,'yonalish.html/', content)
+    content = {
+        "yonalishlar" : Yonalish.objects.all(),
+        "forma": YonalishForm
+    }
+    return render(request,'yonalish.html',content)
 
 
 
